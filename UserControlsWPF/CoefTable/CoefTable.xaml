@@ -10,8 +10,44 @@
     <UserControl.DataContext>
         <local:CoefsTableViewModel />
     </UserControl.DataContext>
-    <Grid>
+    <Grid DataContext="{Binding ElementName=Root}">
+        <Grid.Resources>
+            <FrameworkElement x:Key="proxyElement"/>
+        </Grid.Resources>
+        <ContentControl Visibility="Collapsed" Content="{StaticResource proxyElement}"/>
         <DataGrid
-            ItemsSource="{Binding Coefs}"/>
+            ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:CoefTable}}, Path=Coefs}"
+            AutoGenerateColumns="False"
+            CanUserAddRows="False"
+            SelectionUnit="FullRow"
+            SelectionChanged="DataGridSelectionChanged">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn
+                    Header="{Binding Source={StaticResource proxyElement}, Path=DataContext.IndexHeader}"
+                    Visibility="{Binding Source={StaticResource proxyElement}, Path=DataContext.IndexVisibility}"
+                    IsReadOnly="False">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate DataType="local:Coef">
+                            <TextBlock Text="{Binding Index}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn
+                    Header="{Binding Source={StaticResource proxyElement}, Path=DataContext.ValueHeader}"
+                    Width="1*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate DataType="local:Coef">
+                            <TextBox Text="{Binding Value, Mode=TwoWay}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Add" Click="AddClick"/>
+                    <MenuItem Header="Remove" Click="RemoveClick"/>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+        </DataGrid>
     </Grid>
 </UserControl>

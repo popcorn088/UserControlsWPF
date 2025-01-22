@@ -10,8 +10,5 @@
     <Page Update="CoefTable\CoefTable.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="UserControl1.xaml">
-      <SubType>Designer</SubType>
-    </Page>
   </ItemGroup>
 </Project>

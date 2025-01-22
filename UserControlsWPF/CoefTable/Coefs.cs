@@ -16,11 +16,11 @@ namespace UserControlsWPF.CoefTable
             get => _items;
             set => SetProperty(ref _items, value);
         }
-        public delegate void CoefValueChangedDelegate(Coef coef);
-        public CoefValueChangedDelegate CoefValueChanged;
+        public delegate void CoefValueChangedDelegate(Coef? coef);
+        public CoefValueChangedDelegate? CoefValueChanged;
         public Coefs() => _items.CollectionChanged += ValueCollectionChanged;
 
-        private void ValueCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void ValueCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.Action == NotifyCollectionChangedAction.Add)
             {
@@ -38,7 +38,7 @@ namespace UserControlsWPF.CoefTable
             }
         }
 
-        private void ItemPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-            => CoefValueChanged?.Invoke((Coef)sender);
+        private void ItemPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+            => CoefValueChanged?.Invoke(sender as Coef);
     }
 }
