@@ -24,16 +24,22 @@ namespace UserControlsWPF.CoefTable
         {
             if (e.Action == NotifyCollectionChangedAction.Add)
             {
-                foreach (Coef item in e.NewItems)
+                if (e.NewItems != null)
                 {
-                    item.PropertyChanged += ItemPropertyChanged;
+                    foreach (Coef item in e.NewItems)
+                    {
+                        item.PropertyChanged += ItemPropertyChanged;
+                    }
                 }
             }
             else if (e.Action == NotifyCollectionChangedAction.Remove)
             {
-                foreach (Coef item in e.NewItems)
+                if (e.OldItems != null)
                 {
-                    item.PropertyChanged -= ItemPropertyChanged;
+                    foreach (Coef item in e.OldItems)
+                    {
+                        item.PropertyChanged -= ItemPropertyChanged;
+                    }
                 }
             }
         }

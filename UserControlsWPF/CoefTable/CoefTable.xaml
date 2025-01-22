@@ -16,7 +16,7 @@
         </Grid.Resources>
         <ContentControl Visibility="Collapsed" Content="{StaticResource proxyElement}"/>
         <DataGrid
-            ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:CoefTable}}, Path=Coefs}"
+            ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:CoefTable}}, Path=Coefs.Items}"
             AutoGenerateColumns="False"
             CanUserAddRows="False"
             SelectionUnit="FullRow"
