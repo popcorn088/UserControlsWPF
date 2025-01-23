@@ -14,8 +14,8 @@ namespace UserControlsWPF.CoefTable
             get => _index;
             set => SetProperty(ref _index, value);
         }
-        private decimal _value;
-        public decimal Value
+        private double _value;
+        public double Value
         {
             get => _value;
             set => SetProperty(ref _value, value);

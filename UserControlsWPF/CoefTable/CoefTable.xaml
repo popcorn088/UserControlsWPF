@@ -16,31 +16,22 @@
         </Grid.Resources>
         <ContentControl Visibility="Collapsed" Content="{StaticResource proxyElement}"/>
         <DataGrid
-            ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:CoefTable}}, Path=Coefs.Items}"
+            ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:CoefTable}}, Path=Coefs, Mode=TwoWay}"
             AutoGenerateColumns="False"
             CanUserAddRows="False"
             SelectionUnit="FullRow"
-            SelectionChanged="DataGridSelectionChanged">
+            SelectionChanged="DataGridSelectionChanged"
+            CanUserSortColumns="False">
             <DataGrid.Columns>
-                <DataGridTemplateColumn
-                    Header="{Binding Source={StaticResource proxyElement}, Path=DataContext.IndexHeader}"
+                <DataGridTextColumn
+                    Binding="{Binding Index}"
+                    IsReadOnly="True"
                     Visibility="{Binding Source={StaticResource proxyElement}, Path=DataContext.IndexVisibility}"
-                    IsReadOnly="False">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate DataType="local:Coef">
-                            <TextBlock Text="{Binding Index}"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTemplateColumn
-                    Header="{Binding Source={StaticResource proxyElement}, Path=DataContext.ValueHeader}"
-                    Width="1*">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate DataType="local:Coef">
-                            <TextBox Text="{Binding Value, Mode=TwoWay}"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+                    Header="{Binding Source={StaticResource proxyElement}, Path=DataContext.IndexHeader}"/>
+                <DataGridTextColumn
+                    Width="1*"
+                    Binding="{Binding Value, Mode=TwoWay}"
+                    Header="{Binding Source={StaticResource proxyElement}, Path=DataContext.ValueHeader}"/>
             </DataGrid.Columns>
             <DataGrid.ContextMenu>
                 <ContextMenu>

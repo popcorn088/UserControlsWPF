@@ -24,12 +24,12 @@ namespace UserControlsWPF.CoefTable
         public static readonly DependencyProperty CoefsProperty
             = DependencyProperty.Register(
                 "Coefs",
-                typeof(Coefs),
+                typeof(ObservableCollection<Coef>),
                 typeof(CoefTable),
-                new PropertyMetadata(new Coefs()));
-        public Coefs Coefs
+                new PropertyMetadata(new ObservableCollection<Coef>()));
+        public ObservableCollection<Coef> Coefs
         {
-            get => (Coefs)this.GetValue(CoefsProperty);
+            get => (ObservableCollection<Coef>)this.GetValue(CoefsProperty);
             set => this.SetValue(CoefsProperty, value);
         }
         public static readonly DependencyProperty IndexHeaderProperty
@@ -94,17 +94,19 @@ namespace UserControlsWPF.CoefTable
 
         private void AddClick(object sender, RoutedEventArgs e)
         {
-            Coefs.Items.Add(new Coef()
+            var coef = new Coef()
             {
-                Index = Coefs.Items.Count,
-                Value = 0.0m
-            });
+                Index = Coefs.Count,
+                Value = 0.0,
+            };
+
+            Coefs.Add(coef);
         }
 
         private void RemoveClick(object sender, RoutedEventArgs e)
         {
             List<Coef> selectedCoefs = new List<Coef>();
-            foreach (Coef item in  Coefs.Items)
+            foreach (Coef item in  Coefs)
             {
                 if (item.IsSelected)
                 {
@@ -113,7 +115,7 @@ namespace UserControlsWPF.CoefTable
             }
             for (int i = 0; i < selectedCoefs.Count; i++)
             {
-                Coefs.Items.Remove(selectedCoefs[i]);
+                Coefs.Remove(selectedCoefs[i]);
             }
         }
 
