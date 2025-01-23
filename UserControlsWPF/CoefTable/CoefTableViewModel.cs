@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace UserControlsWPF.CoefTable
 {
-    public class CoefsTableViewModel : BindableBase
+    public class CoefTableViewModel : BindableBase
     {
+        //public Coefs Coefs { get; } = new Coefs();
     }
 }
