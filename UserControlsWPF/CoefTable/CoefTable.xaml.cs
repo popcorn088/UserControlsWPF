@@ -23,10 +23,20 @@ namespace UserControlsWPF.CoefTable
     {
         public static readonly DependencyProperty CoefsProperty
             = DependencyProperty.Register(
-                "Coefs",
+                nameof(Coefs),
                 typeof(Coefs),
                 typeof(CoefTable),
-                new PropertyMetadata(new Coefs()));
+                new PropertyMetadata(new Coefs(), OnCoefsChangedCallback));
+
+        private static void OnCoefsChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var coefTable = d as CoefTable;
+            if (coefTable != null)
+            {
+                //coefTable._vm.Coefs = (Coefs)e.NewValue;
+            }
+        }
+
         public Coefs Coefs
         {
             get => (Coefs)this.GetValue(CoefsProperty);
@@ -34,10 +44,16 @@ namespace UserControlsWPF.CoefTable
         }
         public static readonly DependencyProperty IndexHeaderProperty
             = DependencyProperty.Register(
-                "IndexHeader",
+                nameof(IndexHeader),
                 typeof(string),
                 typeof(CoefTable),
-                new PropertyMetadata("Index"));
+                new PropertyMetadata("Index", OnIndexHeaderChangedCallback));
+
+        private static void OnIndexHeaderChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+
+        }
+
         public string IndexHeader
         {
             get => (string)this.GetValue(IndexHeaderProperty);
@@ -87,22 +103,27 @@ namespace UserControlsWPF.CoefTable
             get => (TextAlignment)GetValue(TextAlignmentProperty);
             set => SetValue(TextAlignmentProperty, value);
         }
+        private CoefTableViewModel _vm;
         public CoefTable()
         {
             InitializeComponent();
+            _vm = (CoefTableViewModel)DataContext;
         }
 
         private void AddClick(object sender, RoutedEventArgs e)
         {
+            /*
             Coefs.Items.Add(new Coef()
             {
                 Index = Coefs.Items.Count,
                 Value = 0.0,
             });
+            */
         }
 
         private void RemoveClick(object sender, RoutedEventArgs e)
         {
+            /*
             List<Coef> selectedCoefs = new List<Coef>();
             foreach (Coef item in  Coefs.Items)
             {
@@ -115,10 +136,12 @@ namespace UserControlsWPF.CoefTable
             {
                 Coefs.Items.Remove(selectedCoefs[i]);
             }
+            */
         }
 
         private void DataGridSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            /*
             foreach (Coef item in e.AddedItems)
             {
                 item.IsSelected = true;
@@ -127,6 +150,7 @@ namespace UserControlsWPF.CoefTable
             {
                 item.IsSelected = false;
             }
+            */
         }
     }
 }

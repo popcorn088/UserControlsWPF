@@ -7,16 +7,16 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              x:Name="Root">
-    <UserControl.DataContext>
-        <local:CoefTableViewModel />
-    </UserControl.DataContext>
+    <!--UserControl.DataContext>
+        <local:CoefTableViewModel x:Name="ViewModel"/>
+    </UserControl.DataContext-->
     <Grid DataContext="{Binding ElementName=Root}">
         <Grid.Resources>
             <FrameworkElement x:Key="proxyElement"/>
         </Grid.Resources>
         <ContentControl Visibility="Collapsed" Content="{StaticResource proxyElement}"/>
         <DataGrid
-            ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:CoefTable}}, Path=Coefs.Items, Mode=TwoWay}"
+            ItemsSource="{Binding Coefs.Items, ElementName=Root, Mode=TwoWay}"
             AutoGenerateColumns="False"
             CanUserAddRows="False"
             SelectionUnit="FullRow"
