@@ -117,6 +117,10 @@ namespace UserControlsWPF.CoefTable
             {
                 Coefs.Items.Remove(selectedCoefs[i]);
             }
+            for (int i = 0; i < Coefs.Items.Count; i++)
+            {
+                Coefs.Items[i].Index = i++;
+            }
         }
 
         private void DataGridSelectionChanged(object sender, SelectionChangedEventArgs e)
