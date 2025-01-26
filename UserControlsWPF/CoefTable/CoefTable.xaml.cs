@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -89,6 +90,17 @@ namespace UserControlsWPF.CoefTable
             get => (TextAlignment)GetValue(TextAlignmentProperty);
             set => SetValue(TextAlignmentProperty, value);
         }
+        public static readonly DependencyProperty IsReadOnlyProperty
+            = DependencyProperty.Register(
+                nameof(IsReadOnly),
+                typeof(bool),
+                typeof(CoefTable),
+                new PropertyMetadata(false));
+        public bool IsReadOnly
+        {
+            get => (bool)GetValue(IsReadOnlyProperty);
+            set => SetValue(IsReadOnlyProperty, value);
+        }
         public CoefTable()
         {
             InitializeComponent();
@@ -133,6 +145,31 @@ namespace UserControlsWPF.CoefTable
             {
                 item.IsSelected = false;
             }
+        }
+    }
+
+    public class VisibilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            var coefTable = value as CoefTable;
+            if (coefTable == null)
+            {
+                return Visibility.Visible;
+            }
+            if (coefTable.IsReadOnly)
+            {
+                return Visibility.Collapsed;
+            }
+            else
+            {
+                return Visibility.Visible;
+            }
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
         }
     }
 }

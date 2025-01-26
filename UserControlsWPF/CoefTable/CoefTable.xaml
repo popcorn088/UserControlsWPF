@@ -7,19 +7,24 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              x:Name="Root">
+    <UserControl.Resources>
+        <local:VisibilityConverter x:Key="VisibilityConverter"/>
+    </UserControl.Resources>
     <Grid DataContext="{Binding ElementName=Root}">
         <Grid.Resources>
             <FrameworkElement x:Key="proxyElement"/>
         </Grid.Resources>
         <ContentControl Visibility="Collapsed" Content="{StaticResource proxyElement}"/>
         <DataGrid
+            x:Name="DataGrid"
             ItemsSource="{Binding Coefs.Items, ElementName=Root, Mode=TwoWay}"
             AutoGenerateColumns="False"
             CanUserAddRows="False"
             SelectionUnit="FullRow"
             SelectionChanged="DataGridSelectionChanged"
             CanUserSortColumns="False"
-            HeadersVisibility="Column">
+            HeadersVisibility="Column"
+            IsReadOnly="{Binding IsReadOnly, Mode=TwoWay}">
             <DataGrid.Columns>
                 <DataGridTextColumn
                     Binding="{Binding Index}"
@@ -32,7 +37,7 @@
                     Header="{Binding Source={StaticResource proxyElement}, Path=DataContext.ValueHeader}"/>
             </DataGrid.Columns>
             <DataGrid.ContextMenu>
-                <ContextMenu>
+                <ContextMenu Visibility="{Binding Converter={StaticResource VisibilityConverter}}">
                     <MenuItem Header="Add" Click="AddClick"/>
                     <MenuItem Header="Remove" Click="RemoveClick"/>
                 </ContextMenu>
