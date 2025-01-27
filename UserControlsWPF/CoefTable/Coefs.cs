@@ -13,6 +13,8 @@ namespace UserControlsWPF.CoefTable
         }
         public delegate void CoefValueChangedDelegate(Coef? coef);
         public CoefValueChangedDelegate? CoefValueChanged;
+        public delegate void NumOfCoefsChangedDelegate();
+        public NumOfCoefsChangedDelegate? NumOfCoefsChanged;
         public Coefs() => _items.CollectionChanged += ValueCollectionChanged;
 
         private void ValueCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
@@ -37,6 +39,8 @@ namespace UserControlsWPF.CoefTable
                     }
                 }
             }
+
+            NumOfCoefsChanged?.Invoke();
         }
 
         private void ItemPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
