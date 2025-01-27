@@ -1,19 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace UserControlsWPF.CoefTable
 {
@@ -118,7 +106,7 @@ namespace UserControlsWPF.CoefTable
         private void RemoveClick(object sender, RoutedEventArgs e)
         {
             List<Coef> selectedCoefs = new List<Coef>();
-            foreach (Coef item in  Coefs.Items)
+            foreach (Coef item in Coefs.Items)
             {
                 if (item.IsSelected)
                 {
