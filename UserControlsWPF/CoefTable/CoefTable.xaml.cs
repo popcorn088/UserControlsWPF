@@ -105,7 +105,7 @@ namespace UserControlsWPF.CoefTable
 
         private void RemoveClick(object sender, RoutedEventArgs e)
         {
-            List<Coef> selectedCoefs = new List<Coef>();
+            var selectedCoefs = new List<Coef>();
             foreach (Coef item in Coefs.Items)
             {
                 if (item.IsSelected)
@@ -140,8 +140,7 @@ namespace UserControlsWPF.CoefTable
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var coefTable = value as CoefTable;
-            if (coefTable == null)
+            if (value is not CoefTable coefTable)
             {
                 return Visibility.Visible;
             }
