@@ -8,43 +8,30 @@ using System.Windows.Input;
 namespace UserControlsWPF
 {
     // https://sourcechord.hatenablog.com/entry/2014/01/13/200039
-    public class RelayCommand : ICommand
+    public class RelayCommand(Action execute) : ICommand
     {
-        private readonly Action _execute;
         private readonly Func<bool> _canExecute;
         public event EventHandler? CanExecuteChanged;
 
-        public RelayCommand(Action execute)
-        {
-            _execute = execute;
-        }
-
         public RelayCommand(Action execute, Func<bool> canExecute) : this(execute)
         {
-            if (execute == null)
-            {
-                throw new ArgumentNullException("execute");
-            }
+            ArgumentNullException.ThrowIfNull(execute);
             _canExecute = canExecute;
         }
 
         public bool CanExecute(object? parameter)
         {
-            return _canExecute == null ? true : _canExecute();
+            return _canExecute == null || _canExecute();
         }
 
         public void Execute(object? parameter)
         {
-            _execute();
+            execute();
         }
 
         public void RaiseCanExecuteChanged()
         {
-            var handler = CanExecuteChanged;
-            if (handler != null)
-            {
-                handler(this, EventArgs.Empty);
-            }
+            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 
@@ -59,16 +46,13 @@ namespace UserControlsWPF
         }
         public RelayCommand(Action<T> execute, Func<T, bool> canExecute)
         {
-            if (execute == null)
-            {
-                throw new ArgumentNullException("execute");
-            }
+            ArgumentNullException.ThrowIfNull(execute);
             _execute = execute;
             _canExecute = canExecute;
         }
         public bool CanExecute(object? parameter)
         {
-            return _canExecute == null ? true : _canExecute((T)parameter);
+            return _canExecute == null || _canExecute((T)parameter);
         }
 
         public void Execute(object? parameter)
@@ -78,11 +62,7 @@ namespace UserControlsWPF
 
         public void RaiseCanExecuteChanged()
         {
-            var handler = CanExecuteChanged;
-            if (handler != null)
-            {
-                handler(this, EventArgs.Empty);
-            }
+            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

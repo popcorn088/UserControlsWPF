@@ -37,7 +37,7 @@ namespace UserControlsWPF.NumericUpDown
             get => (decimal)this.GetValue(ValueProperty);
             set
             {
-                ValidateProperty("Value", value);
+                ValidateProperty(nameof(Value), value);
                 if (!HasErrors)
                 {
                     this.SetValue(ValueProperty, value);
@@ -104,7 +104,7 @@ namespace UserControlsWPF.NumericUpDown
                 typeof(NumericUpDown),
                 new PropertyMetadata(string.Empty));
 
-        readonly Dictionary<string, List<string>> _currentErrors = new Dictionary<string, List<string>>();
+        readonly Dictionary<string, List<string>> _currentErrors = [];
         public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
         public string StringFormat
         {
@@ -146,16 +146,16 @@ namespace UserControlsWPF.NumericUpDown
                     {
                         if (!((Minimum <= dec) && (dec <= Maximum)))
                         {
-                            AddError("Value", "out of range.");
+                            AddError(nameof(Value), "out of range.");
                         }
                         else
                         {
-                            RemoveError("Value");
+                            RemoveError(nameof(Value));
                         }
                     }
                     else
                     {
-                        AddError("Value", "not decimal.");
+                        AddError(nameof(Value), "not decimal.");
                     }
                     break;
                 default:
@@ -165,46 +165,39 @@ namespace UserControlsWPF.NumericUpDown
 
         protected void AddError(string propertyName, string error)
         {
-            if (!_currentErrors.ContainsKey(propertyName))
+            if (!_currentErrors.TryGetValue(propertyName, out List<string>? value))
             {
-                _currentErrors[propertyName] = new List<string>();
+                value = [];
+                _currentErrors[propertyName] = value;
             }
 
-            if (!_currentErrors[propertyName].Contains(error))
+            if (!value.Contains(error))
             {
-                _currentErrors[propertyName].Add(error);
+                value.Add(error);
                 OnErrorsChanged(propertyName);
             }
         }
 
         protected void RemoveError(string propertyName)
         {
-            if (_currentErrors.ContainsKey(propertyName))
-            {
-                _currentErrors.Remove(propertyName);
-            }
-
+            _currentErrors.Remove(propertyName);
             OnErrorsChanged(propertyName);
         }
 
         private void OnErrorsChanged(string propertyName)
         {
-            var h = this.ErrorsChanged;
-            if (h != null)
-            {
-                h(this, new DataErrorsChangedEventArgs(propertyName));
-            }
+            this.ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
         }
 
         public IEnumerable GetErrors(string? propertyName)
         {
             if (string.IsNullOrEmpty(propertyName) ||
-                !_currentErrors.ContainsKey(propertyName))
+                !_currentErrors.TryGetValue(propertyName, out List<string>? value))
             {
-                return null;
+                return new List<string>();
             }
 
-            return _currentErrors[propertyName];
+            return value;
         }
     }
 
@@ -221,7 +214,7 @@ namespace UserControlsWPF.NumericUpDown
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
-            return null;
+            return (object[])DependencyProperty.UnsetValue;
         }
     }
 }
