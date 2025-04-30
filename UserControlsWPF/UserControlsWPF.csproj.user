@@ -5,6 +5,9 @@
     <Compile Update="CoefTable\CoefTable.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="NumericUpDown\NumericUpDown.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Update="CoefTable\CoefTable.xaml">
