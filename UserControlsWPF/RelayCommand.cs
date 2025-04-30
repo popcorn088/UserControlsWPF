@@ -10,7 +10,7 @@ namespace UserControlsWPF
     // https://sourcechord.hatenablog.com/entry/2014/01/13/200039
     public class RelayCommand(Action execute) : ICommand
     {
-        private readonly Func<bool> _canExecute;
+        private readonly Func<bool>? _canExecute;
         public event EventHandler? CanExecuteChanged;
 
         public RelayCommand(Action execute, Func<bool> canExecute) : this(execute)
@@ -38,7 +38,7 @@ namespace UserControlsWPF
     public class RelayCommand<T> : ICommand
     {
         private readonly Action<T> _execute;
-        private readonly Func<T, bool> _canExecute;
+        private readonly Func<T, bool>? _canExecute;
         public event EventHandler? CanExecuteChanged;
         public RelayCommand(Action<T> execute)
         {
@@ -52,11 +52,19 @@ namespace UserControlsWPF
         }
         public bool CanExecute(object? parameter)
         {
+            if (parameter is not T)
+            {
+                throw new ArgumentException("parameter is not type T.");
+            }
             return _canExecute == null || _canExecute((T)parameter);
         }
 
         public void Execute(object? parameter)
         {
+            if (parameter is not T)
+            {
+                throw new ArgumentException("parameter is not type T.");
+            }
             _execute((T)parameter);
         }
 
