@@ -1,20 +1,10 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using System.ComponentModel;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace UserControlsWPF.NumericUpDown
 {
@@ -31,18 +21,21 @@ namespace UserControlsWPF.NumericUpDown
                 nameof(Value),
                 typeof(decimal),
                 typeof(NumericUpDown),
-                new PropertyMetadata(0m));
+                new FrameworkPropertyMetadata(
+                    0m,
+                    FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+                    OnValueChanged));
+
+        private static void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var c = (NumericUpDown)d;
+            c.ValidateProperty(nameof(Value), e.NewValue);
+        }
+
         public decimal Value
         {
             get => (decimal)this.GetValue(ValueProperty);
-            set
-            {
-                ValidateProperty(nameof(Value), value);
-                if (!HasErrors)
-                {
-                    this.SetValue(ValueProperty, value);
-                }
-            }
+            set => this.SetValue(ValueProperty, value);
         }
         public static readonly DependencyProperty NickProperty
             = DependencyProperty.Register(
@@ -141,7 +134,7 @@ namespace UserControlsWPF.NumericUpDown
         {
             switch (propertyName)
             {
-                case "Value":
+                case nameof(Value):
                     if (value is decimal dec)
                     {
                         if (!((Minimum <= dec) && (dec <= Maximum)))
@@ -205,16 +198,26 @@ namespace UserControlsWPF.NumericUpDown
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            if (values[0] is decimal dec)
+            if (values.Any(v => v == DependencyProperty.UnsetValue))
             {
-                return dec.ToString((string)values[1]);
+                return Binding.DoNothing;
             }
-            return DependencyProperty.UnsetValue;
+
+            if (values[0] is decimal dec && values[1] is string format)
+            {
+                return string.IsNullOrEmpty(format) ? dec.ToString() : dec.ToString(format);
+            }
+
+            return Binding.DoNothing;
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
-            return (object[])DependencyProperty.UnsetValue;
+            if (value is string str && decimal.TryParse(str, NumberStyles.Any, culture, out decimal dec))
+            {
+                return [dec, Binding.DoNothing];
+            }
+            return [DependencyProperty.UnsetValue, Binding.DoNothing];
         }
     }
 }

@@ -18,9 +18,9 @@
         <TextBox
             Grid.Column="0">
             <TextBox.Text>
-                <MultiBinding Converter="{StaticResource DecimalConverter}" UpdateSourceTrigger="PropertyChanged">
-                    <Binding Path="Value"/>
-                    <Binding Path="StringFormat"/>
+                <MultiBinding Converter="{StaticResource DecimalConverter}" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
+                    <Binding Path="Value" ElementName="Root" />
+                    <Binding Path="StringFormat" ElementName="Root" />
                 </MultiBinding>
             </TextBox.Text>
         </TextBox>
